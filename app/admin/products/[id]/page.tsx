@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Product, PRODUCT_CATEGORIES } from "@/types/product";
-import { ArrowLeft, Edit, Trash2, Package, Loader2, ImageIcon } from "lucide-react";
+import { ArrowLeft, Edit, Trash2, Package, Loader2, ImageIcon, TrendingDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,6 +14,7 @@ export default function ViewProductPage() {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeImage, setActiveImage] = useState<string>("");
 
   useEffect(() => {
     fetchProduct();
@@ -30,6 +31,9 @@ export default function ViewProductPage() {
 
       const data = await response.json();
       setProduct(data.product);
+      if (data.product?.images?.length > 0) {
+        setActiveImage(data.product.images[0]);
+      }
     } catch (error) {
       console.error("Error fetching product:", error);
       alert("Failed to load product. Redirecting...");
@@ -145,18 +149,18 @@ export default function ViewProductPage() {
           {/* Image Gallery */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <ImageIcon className="w-5 h-5" />
+              <ImageIcon className="w-5 h-5 text-blue-600" />
               Product Gallery
             </h2>
-            {product.images && product.images.length > 0 ? (
+            {product?.images && product.images.length > 0 ? (
               <div className="space-y-4">
                 {/* Main Image */}
-                <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-gray-50 border border-gray-200 shadow-inner">
                   <Image
-                    src={product.images[0]}
-                    alt={product.name}
+                    src={activeImage || product.images[0]}
+                    alt={product?.name ?? "Product image"}
                     fill
-                    className="object-contain"
+                    className="object-contain transition-all duration-300"
                     priority
                   />
                 </div>
@@ -164,22 +168,30 @@ export default function ViewProductPage() {
                 {product.images.length > 1 && (
                   <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
                     {product.images.map((url, index) => (
-                      <div key={url} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                      <button
+                        key={url}
+                        onClick={() => setActiveImage(url)}
+                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                          (activeImage || product.images[0]) === url
+                            ? "border-blue-600 ring-2 ring-blue-100 shadow-md scale-95"
+                            : "border-gray-200 hover:border-blue-300"
+                        }`}
+                      >
                         <Image
                           src={url}
-                          alt={`${product.name} thumbnail ${index + 1}`}
+                          alt={`${product?.name ?? "Product"} thumbnail ${index + 1}`}
                           fill
                           className="object-cover"
                         />
-                      </div>
+                      </button>
                     ))}
                   </div>
                 )}
               </div>
             ) : (
-              <div className="aspect-video w-full rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 gap-2">
+              <div className="aspect-video w-full rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 gap-2 bg-gray-50">
                 <ImageIcon className="w-12 h-12" />
-                <p>No images uploaded for this product</p>
+                <p className="font-medium">No images uploaded for this product</p>
               </div>
             )}
           </div>
@@ -193,20 +205,20 @@ export default function ViewProductPage() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Category</p>
                 <span className="px-3 py-1 inline-flex text-sm font-semibold rounded-full bg-blue-100 text-blue-800 capitalize">
-                  {categoryLabel}
+                  {categoryLabel ?? "Uncategorized"}
                 </span>
               </div>
               <div>
                 <p className="text-sm text-gray-600 mb-1">Brand</p>
-                <p className="text-gray-900 font-medium">{product.brand}</p>
+                <p className="text-gray-900 font-medium">{product?.brand ?? "N/A"}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-600 mb-1">Model Number</p>
-                <p className="text-gray-900 font-medium">{product.modelNumber}</p>
+                <p className="text-gray-900 font-medium">{product?.modelNumber ?? "N/A"}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-600 mb-1">Stock</p>
-                <p className="text-gray-900 font-medium">{product.stock} units</p>
+                <p className="text-gray-900 font-medium">{product?.stock ?? 0} units</p>
               </div>
             </div>
           </div>
@@ -214,7 +226,7 @@ export default function ViewProductPage() {
           {/* Description */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
-            <p className="text-gray-700 whitespace-pre-wrap">{product.description}</p>
+            <p className="text-gray-700 whitespace-pre-wrap">{product?.description ?? "No description available."}</p>
           </div>
 
           {/* Specifications */}
@@ -252,12 +264,15 @@ export default function ViewProductPage() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Regular Price</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  ₹{product.price.toLocaleString()}
+                  ₹{product?.price?.toLocaleString() ?? 0}
                 </p>
               </div>
-              {product.discountPrice && (
+              {product?.discountPrice && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Discount Price</p>
+                  <p className="text-sm text-gray-600 mb-1 flex items-center gap-1">
+                    <TrendingDown className="w-4 h-4 text-green-600" />
+                    Discount Price
+                  </p>
                   <p className="text-2xl font-bold text-green-600">
                     ₹{product.discountPrice.toLocaleString()}
                   </p>
@@ -278,49 +293,49 @@ export default function ViewProductPage() {
                 <span className="text-sm text-gray-600">Active</span>
                 <span
                   className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                    product.isActive
+                    product?.isActive
                       ? "bg-green-100 text-green-800"
                       : "bg-red-100 text-red-800"
                   }`}
                 >
-                  {product.isActive ? "Yes" : "No"}
+                  {product?.isActive ? "Yes" : "No"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Featured</span>
                 <span
                   className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                    product.isFeatured
+                    product?.isFeatured
                       ? "bg-purple-100 text-purple-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  {product.isFeatured ? "Yes" : "No"}
+                  {product?.isFeatured ? "Yes" : "No"}
                 </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Stock Status</span>
                 <span
                   className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                    product.stock > 5
+                    (product?.stock ?? 0) > 5
                       ? "bg-green-100 text-green-800"
-                      : product.stock > 0
+                      : (product?.stock ?? 0) > 0
                       ? "bg-orange-100 text-orange-800"
                       : "bg-red-100 text-red-800"
                   }`}
                 >
-                  {product.stock > 5 ? "In Stock" : product.stock > 0 ? "Low Stock" : "Out of Stock"}
+                  {(product?.stock ?? 0) > 5 ? "In Stock" : (product?.stock ?? 0) > 0 ? "Low Stock" : "Out of Stock"}
                 </span>
               </div>
             </div>
           </div>
 
           {/* Metadata */}
-          {(product.createdAt || product.updatedAt) && (
+          {(product?.createdAt || product?.updatedAt) && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Metadata</h2>
               <div className="space-y-3 text-sm">
-                {product.createdAt && (
+                {product?.createdAt && (
                   <div>
                     <p className="text-gray-600">Created</p>
                     <p className="text-gray-900 font-medium">
@@ -334,7 +349,7 @@ export default function ViewProductPage() {
                     </p>
                   </div>
                 )}
-                {product.updatedAt && (
+                {product?.updatedAt && (
                   <div>
                     <p className="text-gray-600">Last Updated</p>
                     <p className="text-gray-900 font-medium">
