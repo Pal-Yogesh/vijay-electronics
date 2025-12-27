@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const ContactUS = () => {
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   // Animation variants
   const containerVariants = {
@@ -15,7 +15,7 @@ const ContactUS = () => {
         delayChildren: 0.2,
       },
     },
-  };
+  } as const;
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -29,7 +29,7 @@ const ContactUS = () => {
       boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
       transition: { type: "spring", stiffness: 300, damping: 10 },
     },
-  };
+  } as const;
 
   const contactOptions = [
     {
@@ -289,7 +289,7 @@ const ContactUS = () => {
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3561.9949199346843!2d79.01872687366547!3d26.776431865937102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3975e0764284cbab%3A0x5e5666816f0320a8!2sVijay%20Electronics!5e0!3m2!1sen!2sin!4v1743666230371!5m2!1sen!2sin"
                   width="600"
                   height="450"
-                  allowFullScreen=""
+                  allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
@@ -371,8 +371,8 @@ const ContactUS = () => {
   );
 };
 
-const SocialIcon = ({ type }) => {
-  const icons = {
+const SocialIcon = ({ type }: { type: string }) => {
+  const icons: Record<string, React.ReactNode> = {
     twitter: (
       <svg
         width="24"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/frontend/Navbar";
 import Footer from "@/components/frontend/Footer";
@@ -12,7 +12,7 @@ import Image from "next/image";
 import { Search, Filter, Star, ImageIcon, Loader2, Plus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
-export default function AllProductsPage() {
+function AllProductsContent() {
   const { products, isLoading } = useProducts();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
@@ -39,110 +39,117 @@ export default function AllProductsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <div className="flex-grow flex flex-col items-center justify-center">
-          <Loader2 className="w-12 h-12 animate-spin text-[#0C2730] mb-4" />
-          <p className="text-gray-600 font-medium text-lg">Loading our catalog...</p>
-        </div>
-        <Footer />
+      <div className="grow flex flex-col items-center justify-center">
+        <Loader2 className="w-12 h-12 animate-spin text-[#0C2730] mb-4" />
+        <p className="text-gray-600 font-medium text-lg">Loading our catalog...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col text-gray-900">
-      <Navbar />
+    <main className="grow container mx-auto px-4 py-12">
+      <div className="mb-12">
+        <h1 className="text-4xl md:text-5xl font-black text-[#0C2730] mb-4 tracking-tight">Our Full Catalog</h1>
+        <p className="text-gray-500 max-w-2xl text-lg">
+          Explore our entire range of high-quality electronics, from state-of-the-art TVs to essential home appliances.
+        </p>
+      </div>
 
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-[#0C2730] mb-4 tracking-tight">Our Full Catalog</h1>
-          <p className="text-gray-500 max-w-2xl text-lg">
-            Explore our entire range of high-quality electronics, from state-of-the-art TVs to essential home appliances.
-          </p>
+      {/* Filters & Search */}
+      <div className="sticky top-20 z-30 bg-white/80 backdrop-blur-xl p-4 rounded-3xl shadow-sm border border-gray-100 mb-12 flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 relative group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0C2730] transition-colors" />
+          <input
+            type="text"
+            placeholder="Search by name, brand, or features..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#0C2730]/10 focus:bg-white transition-all text-gray-900 font-medium"
+          />
         </div>
 
-        {/* Filters & Search */}
-        <div className="sticky top-20 z-30 bg-white/80 backdrop-blur-xl p-4 rounded-3xl shadow-sm border border-gray-100 mb-12 flex flex-col lg:flex-row gap-6">
-          <div className="flex-1 relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#0C2730] transition-colors" />
-            <input
-              type="text"
-              placeholder="Search by name, brand, or features..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[#0C2730]/10 focus:bg-white transition-all text-gray-900 font-medium"
-            />
-          </div>
-
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
-            <Filter className="text-gray-400 shrink-0 hidden md:block" />
+        <div className="flex items-center gap-4 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+          <Filter className="text-gray-400 shrink-0 hidden md:block" />
+          <button
+            onClick={() => setSelectedCategory("all")}
+            className={`px-6 py-3 rounded-2xl font-bold whitespace-nowrap transition-all ${
+              selectedCategory === "all"
+                ? "bg-[#0C2730] text-white shadow-lg shadow-[#0C2730]/20"
+                : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+            }`}
+          >
+            All Categories
+          </button>
+          {PRODUCT_CATEGORIES.map((cat) => (
             <button
-              onClick={() => setSelectedCategory("all")}
+              key={cat.value}
+              onClick={() => setSelectedCategory(cat.value)}
               className={`px-6 py-3 rounded-2xl font-bold whitespace-nowrap transition-all ${
-                selectedCategory === "all"
+                selectedCategory === cat.value
                   ? "bg-[#0C2730] text-white shadow-lg shadow-[#0C2730]/20"
                   : "bg-gray-50 text-gray-500 hover:bg-gray-100"
               }`}
             >
-              All Categories
+              {cat.label}
             </button>
-            {PRODUCT_CATEGORIES.map((cat) => (
-              <button
-                key={cat.value}
-                onClick={() => setSelectedCategory(cat.value)}
-                className={`px-6 py-3 rounded-2xl font-bold whitespace-nowrap transition-all ${
-                  selectedCategory === cat.value
-                    ? "bg-[#0C2730] text-white shadow-lg shadow-[#0C2730]/20"
-                    : "bg-gray-50 text-gray-500 hover:bg-gray-100"
-                }`}
-              >
-                {cat.label}
-              </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Results Info */}
+      <div className="mb-8 flex items-center justify-between">
+        <p className="text-gray-500 font-medium">
+          Showing <span className="text-[#0C2730] font-bold">{filteredProducts.length}</span> products
+        </p>
+      </div>
+
+      {/* Product Grid */}
+      <AnimatePresence mode="wait">
+        {filteredProducts.length > 0 ? (
+          <motion.div 
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard key={product._id || product.id} product={product} />
             ))}
-          </div>
-        </div>
-
-        {/* Results Info */}
-        <div className="mb-8 flex items-center justify-between">
-          <p className="text-gray-500 font-medium">
-            Showing <span className="text-[#0C2730] font-bold">{filteredProducts.length}</span> products
-          </p>
-        </div>
-
-        {/* Product Grid */}
-        <AnimatePresence mode="wait">
-          {filteredProducts.length > 0 ? (
-            <motion.div 
-              layout
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          </motion.div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center justify-center py-32 bg-gray-50 rounded-[40px] border-2 border-dashed border-gray-200"
+          >
+            <div className="w-24 h-24 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6">
+              <Search className="w-10 h-10 text-gray-300" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">No matches found</h3>
+            <p className="text-gray-500">Try adjusting your filters or search terms.</p>
+            <button 
+              onClick={() => {setSearchQuery(""); setSelectedCategory("all");}}
+              className="mt-8 text-[#0C2730] font-bold hover:underline"
             >
-              {filteredProducts.map((product) => (
-                <ProductCard key={product._id || product.id} product={product} />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center py-32 bg-gray-50 rounded-[40px] border-2 border-dashed border-gray-200"
-            >
-              <div className="w-24 h-24 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6">
-                <Search className="w-10 h-10 text-gray-300" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">No matches found</h3>
-              <p className="text-gray-500">Try adjusting your filters or search terms.</p>
-              <button 
-                onClick={() => {setSearchQuery(""); setSelectedCategory("all");}}
-                className="mt-8 text-[#0C2730] font-bold hover:underline"
-              >
-                Clear all filters
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+              Clear all filters
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}
 
+export default function AllProductsPage() {
+  return (
+    <div className="min-h-screen flex flex-col text-gray-900">
+      <Navbar />
+      <Suspense fallback={
+        <div className="grow flex flex-col items-center justify-center">
+          <Loader2 className="w-12 h-12 animate-spin text-[#0C2730] mb-4" />
+          <p className="text-gray-600 font-medium text-lg">Loading our catalog...</p>
+        </div>
+      }>
+        <AllProductsContent />
+      </Suspense>
       <Footer />
     </div>
   );

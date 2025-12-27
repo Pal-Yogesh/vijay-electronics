@@ -98,11 +98,11 @@ const TvParticularProducts = () => {
         ease: "easeIn",
       },
     },
-  };
+  } as const;
 
   const featureItemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       opacity: 1,
       x: 0,
       transition: {
@@ -114,11 +114,11 @@ const TvParticularProducts = () => {
 
   const indicatorVariants = {
     initial: { left: 0 },
-    animate: (activeTab) => ({
+    animate: (activeTab: number) => ({
       left: `calc(${(activeTab * 100) / tabs.length}% + 8px)`,
       width: `calc(${100 / tabs.length}% - 16px)`,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30,
       },
@@ -196,7 +196,7 @@ const TvParticularProducts = () => {
                             animate="visible"
                             className="flex items-start"
                           >
-                            <span className="flex-shrink-0 w-5 h-5 mt-1 mr-3 text-[#0C2730]">
+                            <span className="shrink-0 w-5 h-5 mt-1 mr-3 text-[#0C2730]">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"
@@ -387,25 +387,25 @@ const RefrigeratorTabs = () => {
         delayChildren: 0.2,
       },
     },
-  };
+  } as const;
 
   const tabVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5,ease: "easeOut", },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
     exit: {
       opacity: 0,
       y: -20,
-      transition: { duration: 0.3,ease: "easeIn", },
+      transition: { duration: 0.3, ease: "easeIn" },
     },
-  };
+  } as const;
 
   const featureVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       opacity: 1,
       x: 0,
       transition: { delay: i * 0.1, duration: 0.4 },
@@ -419,15 +419,15 @@ const RefrigeratorTabs = () => {
       scale: 1,
       transition: { duration: 0.6, ease: "easeOut" },
     },
-  };
+  } as const;
 
   const indicatorVariants = {
     initial: { left: 0 },
-    animate: (activeTab) => ({
+    animate: (activeTab: number) => ({
       left: `calc(${activeTab * (100 / refrigeratorTypes.length)}% + 8px)`,
       width: `calc(${100 / refrigeratorTypes.length}% - 16px)`,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30,
       },
@@ -529,7 +529,7 @@ const RefrigeratorTabs = () => {
                             variants={featureVariants}
                             className="flex items-start"
                           >
-                            <span className="flex-shrink-0 w-5 h-5 mt-1 mr-3 text-[#0C2730]">
+                            <span className="shrink-0 w-5 h-5 mt-1 mr-3 text-[#0C2730]">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20"

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useProducts } from '@/context/ProductContext';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
+import { Product } from '@/types/product';
 import Link from 'next/link';
 import { Star, ShoppingCart, Heart, Eye, Loader2, ImageIcon } from 'lucide-react';
 
@@ -84,111 +85,115 @@ const HeroRecommendedProducts = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <motion.div
-              key={product._id || product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              onMouseEnter={() => setIsHovering(product._id || product.id || null)}
-              onMouseLeave={() => setIsHovering(null)}
-              className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-[#0C2730]/10 transition-all duration-500 border border-gray-100 flex flex-col h-full"
-            >
-              <div className="relative aspect-square overflow-hidden bg-gray-50">
-                {product.images?.[0] ? (
-                  <Image 
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-200">
-                    <ImageIcon className="w-12 h-12" />
-                  </div>
-                )}
-                
-                {product.isFeatured && (
-                  <span className="absolute top-6 left-6 bg-[#14404B] text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-lg">
-                    Featured
-                  </span>
-                )}
-
-                {/* Quick Actions Overlay */}
-                <div 
-                  className={`absolute inset-0 bg-[#0C2730]/60 backdrop-blur-sm flex items-center justify-center gap-4 transition-all duration-500 ${
-                    isHovering === (product._id || product.id) ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                  }`}
-                >
-                  <Link 
-                    href={`/products/${product._id || product.id}`}
-                    className="bg-white text-[#0C2730] p-4 rounded-2xl hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95"
-                  >
-                    <Eye className="h-5 w-5" />
-                  </Link>
-                  <button 
-                    onClick={() => {
-                      addToWishlist({
-                        id: product._id || product.id,
-                        name: product.name,
-                        price: product.discountPrice || product.price,
-                        image: product.images?.[0],
-                        brand: product.brand,
-                        category: product.category
-                      });
-                      alert("Added to wishlist!");
-                    }}
-                    className="bg-white text-[#0C2730] p-4 rounded-2xl hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95"
-                  >
-                    <Heart className="h-5 w-5" />
-                  </button>
-                  <button 
-                    onClick={() => {
-                      addToCart({
-                        id: product._id || product.id,
-                        name: product.name,
-                        price: product.discountPrice || product.price,
-                        quantity: 1,
-                        image: product.images?.[0],
-                        brand: product.brand,
-                        category: product.category
-                      });
-                      alert("Added to cart!");
-                    }}
-                    className="bg-blue-600 text-white p-4 rounded-2xl hover:bg-blue-700 transition-all duration-300 hover:scale-110 active:scale-95"
-                  >
-                    <ShoppingCart className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
+            {filteredProducts.map((product: Product) => {
+              const productId = (product._id || product.id) as string;
               
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="mb-4">
-                  <p className="text-[10px] text-blue-600 font-black uppercase tracking-[0.2em] mb-1">{product.brand}</p>
-                  <Link href={`/products/${product._id || product.id}`}>
-                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight hover:text-[#14404B] transition-colors">
-                      {product.name}
-                    </h3>
-                  </Link>
-                </div>
-                
-                <div className="mt-auto">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <span className="text-[10px] text-gray-400 ml-2 font-bold tracking-widest">4.9/5</span>
+              return (
+                <motion.div
+                  key={productId}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  onMouseEnter={() => setIsHovering(productId)}
+                  onMouseLeave={() => setIsHovering(null)}
+                  className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-[#0C2730]/10 transition-all duration-500 border border-gray-100 flex flex-col h-full"
+                >
+                  <div className="relative aspect-square overflow-hidden bg-gray-50">
+                    {product.images?.[0] ? (
+                      <Image 
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-200">
+                        <ImageIcon className="w-12 h-12" />
+                      </div>
+                    )}
+                    
+                    {product.isFeatured && (
+                      <span className="absolute top-6 left-6 bg-[#14404B] text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full shadow-lg">
+                        Featured
+                      </span>
+                    )}
+
+                    {/* Quick Actions Overlay */}
+                    <div 
+                      className={`absolute inset-0 bg-[#0C2730]/60 backdrop-blur-sm flex items-center justify-center gap-4 transition-all duration-500 ${
+                        isHovering === productId ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      }`}
+                    >
+                      <Link 
+                        href={`/products/${productId}`}
+                        className="bg-white text-[#0C2730] p-4 rounded-2xl hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95"
+                      >
+                        <Eye className="h-5 w-5" />
+                      </Link>
+                      <button 
+                        onClick={() => {
+                          addToWishlist({
+                            id: productId,
+                            name: product.name,
+                            price: product.discountPrice || product.price,
+                            image: product.images?.[0],
+                            brand: product.brand,
+                            category: product.category
+                          });
+                          alert("Added to wishlist!");
+                        }}
+                        className="bg-white text-[#0C2730] p-4 rounded-2xl hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 active:scale-95"
+                      >
+                        <Heart className="h-5 w-5" />
+                      </button>
+                      <button 
+                        onClick={() => {
+                          addToCart({
+                            id: productId,
+                            name: product.name,
+                            price: product.discountPrice || product.price,
+                            quantity: 1,
+                            image: product.images?.[0],
+                            brand: product.brand,
+                            category: product.category
+                          });
+                          alert("Added to cart!");
+                        }}
+                        className="bg-blue-600 text-white p-4 rounded-2xl hover:bg-blue-700 transition-all duration-300 hover:scale-110 active:scale-95"
+                      >
+                        <ShoppingCart className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                   
-                  <div className="flex items-end gap-2">
-                    <span className="text-2xl font-black text-[#0C2730]">₹{(product.discountPrice || product.price).toLocaleString()}</span>
-                    {product.discountPrice && (
-                      <span className="text-sm text-gray-400 line-through font-bold mb-1">₹{product.price.toLocaleString()}</span>
-                    )}
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="mb-4">
+                      <p className="text-[10px] text-blue-600 font-black uppercase tracking-[0.2em] mb-1">{product.brand}</p>
+                      <Link href={`/products/${productId}`}>
+                        <h3 className="text-lg font-bold text-gray-900 line-clamp-2 leading-tight hover:text-[#14404B] transition-colors">
+                          {product.name}
+                        </h3>
+                      </Link>
+                    </div>
+                    
+                    <div className="mt-auto">
+                      <div className="flex items-center gap-1 mb-4">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        ))}
+                        <span className="text-[10px] text-gray-400 ml-2 font-bold tracking-widest">4.9/5</span>
+                      </div>
+                      
+                      <div className="flex items-end gap-2">
+                        <span className="text-2xl font-black text-[#0C2730]">₹{(product.discountPrice || product.price).toLocaleString()}</span>
+                        {product.discountPrice && (
+                          <span className="text-sm text-gray-400 line-through font-bold mb-1">₹{product.price.toLocaleString()}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                </motion.div>
+              );
+            })}
         </div>
         
         <div className="text-center mt-20">

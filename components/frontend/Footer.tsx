@@ -153,9 +153,9 @@ const Footer = () => {
                   <i className="fas fa-map-marker-alt"></i>
                 </div>
                 <span className="">
-                  123 Tech Avenue, Digital City
+                  46, Chauki Shamsheri Pul Kaharan
                   <br />
-                  Innovation State, 54321
+                  Etawah (U.P), India
                 </span>
               </li>
               <li className="flex items-center">
@@ -163,10 +163,10 @@ const Footer = () => {
                   <i className="fas fa-phone-alt"></i>
                 </div>
                 <a
-                  href="tel:+15551234567"
+                  href="tel:+919410001609"
                   className="text-white hover:text-black transition"
                 >
-                  +1 (555) 123-4567
+                  +91 9410001609
                 </a>
               </li>
               <li className="flex items-center">
@@ -174,7 +174,7 @@ const Footer = () => {
                   <i className="fab fa-whatsapp"></i>
                 </div>
                 <a
-                  href="https://wa.me/15551234567"
+                  href="https://wa.me/919410001609"
                   className="text-white hover:text-black transition"
                 >
                   WhatsApp Support
@@ -188,7 +188,7 @@ const Footer = () => {
                   href="mailto:support@techelectro.com"
                   className="text-white hover:text-black transition"
                 >
-                  support@techelectro.com
+                  vijayelectronicsetw@gmail.com
                 </a>
               </li>
             </ul>
@@ -256,7 +256,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 md:px-6 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0 text-sm ">
-              © {new Date().getFullYear()} TechElectro. All rights reserved.
+              © {new Date().getFullYear()} Vijay Electronics. All rights reserved.
             </div>
             <div className="flex flex-wrap gap-4 text-sm ">
               <Link

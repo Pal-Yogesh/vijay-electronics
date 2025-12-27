@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProducts } from "@/context/ProductContext";
 import Link from "next/link";
@@ -85,7 +85,9 @@ const EnhancedTabComponent = () => {
           {tabs.map((tab, index) => (
             <motion.button
               key={index}
-              ref={(el) => (tabRefs.current[index] = el)}
+              ref={(el) => {
+                tabRefs.current[index] = el;
+              }}
               onClick={() => setActiveTab(index)}
               onMouseEnter={() => setHoveredTab(index)}
               onMouseLeave={() => setHoveredTab(null)}
@@ -250,7 +252,7 @@ const EnhancedProductCard = ({ product }: { product: any }) => {
 
 // Tab Icons Component
 const TabIcon = ({ name, active }: { name: string; active: boolean }) => {
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, React.ReactNode> = {
     tv: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

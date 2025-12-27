@@ -54,7 +54,7 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [autoplay, heroSlides.length]);
 
-  const handleDotClick = (index) => {
+  const handleDotClick = (index: number) => {
     setCurrentSlide(index);
     setAutoplay(false);
     // Resume autoplay after 10 seconds of inactivity
