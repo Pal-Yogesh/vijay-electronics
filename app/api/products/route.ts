@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
+import { isAdmin } from "@/lib/admin";
 
 // GET: Fetch all products or search
 export async function GET(request: NextRequest) {
@@ -63,9 +64,9 @@ export async function GET(request: NextRequest) {
 // POST: Create new product
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
+    const isUserAdmin = await isAdmin();
 
-    if (!userId) {
+    if (!isUserAdmin) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }

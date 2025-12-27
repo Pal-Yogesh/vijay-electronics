@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
+import { isAdmin } from "@/lib/admin";
 
 export default async function AdminLayout({
   children,
@@ -14,8 +15,11 @@ export default async function AdminLayout({
     redirect("/sign-in");
   }
 
-  // TODO: Add role-based access control
-  // Check if user has admin role from Clerk metadata
+  const isUserAdmin = await isAdmin();
+  
+  if (!isUserAdmin) {
+    redirect("/");
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

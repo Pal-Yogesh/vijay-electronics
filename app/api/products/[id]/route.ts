@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import ProductModel from "@/models/Product";
 import mongoose from "mongoose";
+import { isAdmin } from "@/lib/admin";
 
 // GET: Fetch single product by ID
 export async function GET(
@@ -53,9 +54,9 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth();
+    const isUserAdmin = await isAdmin();
 
-    if (!userId) {
+    if (!isUserAdmin) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -156,9 +157,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth();
+    const isUserAdmin = await isAdmin();
 
-    if (!userId) {
+    if (!isUserAdmin) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
