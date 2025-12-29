@@ -220,7 +220,7 @@ const TvParticularProducts = () => {
                         className="mt-8 "
                       >
                         <Link 
-                          href={`/category/${tabs[activeTab].categorySlug}`}
+                          href={`/shop?category=${tabs[activeTab].categorySlug}`}
                           className="inline-block px-6 py-3 cursor-pointer bg-[#0C2730] hover:bg-[#0c2730ea] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                         >
                           Explore {tab.content.title}
@@ -591,7 +591,7 @@ const RefrigeratorTabs = () => {
 
                   <motion.div variants={tabVariants} className="mt-8">
                     <Link 
-                      href="/category/refrigerator"
+                      href="/shop?category=refrigerator"
                       className="inline-block px-6 py-3 bg-[#0C2730] hover:bg-[#0c2730ea] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                     >
                       Shop {refrigeratorTypes[activeTab].name} Refrigerators

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ProductProvider } from "@/context/ProductContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { CompareProvider } from "@/context/CompareContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,9 @@ export default function RootLayout({
           <ProductProvider>
             <CartProvider>
               <WishlistProvider>
-                {children}
+                <CompareProvider>
+                  {children}
+                </CompareProvider>
               </WishlistProvider>
             </CartProvider>
           </ProductProvider>

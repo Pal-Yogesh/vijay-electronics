@@ -16,13 +16,15 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Truck, 
-  RefreshCcw 
+  RefreshCcw,
+  Scale 
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 
 export default function PublicProductDetailPage() {
   const params = useParams();
@@ -31,6 +33,7 @@ export default function PublicProductDetailPage() {
 
   const { addToCart } = useCart();
   const { addToWishlist } = useWishlist();
+  const { addToCompare, isInCompare } = useCompare();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -240,6 +243,23 @@ export default function PublicProductDetailPage() {
                   className="w-14 h-14 border-2 border-gray-100 rounded-2xl flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-100 transition-all active:scale-95"
                 >
                   <Heart className="w-6 h-6" />
+                </button>
+                <button 
+                  onClick={() => {
+                    addToCompare(productId);
+                    if (!isInCompare(productId)) {
+                      alert("Added to compare! You can compare up to 3 products.");
+                    }
+                  }}
+                  disabled={isInCompare(productId)}
+                  className={`w-14 h-14 border-2 rounded-2xl flex items-center justify-center transition-all active:scale-95 ${
+                    isInCompare(productId)
+                      ? "bg-purple-50 text-purple-600 border-purple-200 cursor-not-allowed"
+                      : "border-gray-100 text-gray-400 hover:text-purple-600 hover:border-purple-100"
+                  }`}
+                  title={isInCompare(productId) ? "In Compare List" : "Add to Compare"}
+                >
+                  <Scale className="w-6 h-6" />
                 </button>
               </div>
 

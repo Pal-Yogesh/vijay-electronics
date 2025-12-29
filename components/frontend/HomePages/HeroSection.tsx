@@ -122,7 +122,7 @@ const HeroSection = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <Link href={`/category/${slide.type}`}>
+                      <Link href={`/shop?category=${slide.type}`}>
                         <motion.button
                           className="group inline-flex items-center justify-center bg-white text-gray-900 px-6 py-3 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
                           whileHover={{ scale: 1.03 }}
@@ -133,7 +133,7 @@ const HeroSection = () => {
                         </motion.button>
                       </Link>
 
-                      <Link href="/products">
+                      <Link href="/shop">
                         <motion.button
                           className="group inline-flex items-center justify-center bg-transparent text-white border border-white/30 backdrop-blur-sm px-6 py-3 rounded-full font-medium text-sm md:text-base hover:bg-white/10 transition-all duration-300 cursor-pointer"
                           whileHover={{ scale: 1.03 }}

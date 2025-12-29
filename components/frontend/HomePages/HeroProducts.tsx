@@ -137,7 +137,7 @@ const EnhancedTabComponent = () => {
       
       <div className="mt-16 text-center">
         <Link 
-          href="/products"
+          href="/shop"
           className="inline-flex items-center justify-center px-8 py-4 bg-[#0C2730] text-white font-bold rounded-full hover:bg-[#14404B] transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
         >
           View All Products

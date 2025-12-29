@@ -9,8 +9,9 @@ import { PRODUCT_CATEGORIES } from "@/types/product";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Filter, Star, ImageIcon, Loader2, Plus } from "lucide-react";
+import { Search, Filter, Star, ImageIcon, Loader2, Plus, Scale } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useCompare } from "@/context/CompareContext";
 
 function AllProductsContent() {
   const { products, isLoading } = useProducts();
@@ -158,6 +159,7 @@ export default function AllProductsPage() {
 const ProductCard = ({ product }: { product: any }) => {
   const imageUrl = product.images?.[0] ?? "";
   const { addToCart } = useCart();
+  const { addToCompare, isInCompare } = useCompare();
   
   return (
     <motion.div
@@ -211,35 +213,54 @@ const ProductCard = ({ product }: { product: any }) => {
           <span className="text-[10px] text-gray-400 ml-2 font-black tracking-widest">4.9/5</span>
         </div>
 
-        <div className="mt-auto flex justify-between items-center gap-4">
-          <div className="flex flex-col">
-            {product.discountPrice && product.discountPrice < product.price ? (
-              <>
-                <p className="text-xs text-gray-400 line-through font-bold">₹{product.price.toLocaleString()}</p>
-                <p className="text-2xl font-black text-[#0C2730]">₹{product.discountPrice.toLocaleString()}</p>
-              </>
-            ) : (
-              <p className="text-2xl font-black text-[#0C2730]">₹{product.price.toLocaleString()}</p>
-            )}
+        <div className="mt-auto space-y-3">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              {product.discountPrice && product.discountPrice < product.price ? (
+                <>
+                  <p className="text-xs text-gray-400 line-through font-bold">₹{product.price.toLocaleString()}</p>
+                  <p className="text-2xl font-black text-[#0C2730]">₹{product.discountPrice.toLocaleString()}</p>
+                </>
+              ) : (
+                <p className="text-2xl font-black text-[#0C2730]">₹{product.price.toLocaleString()}</p>
+              )}
+            </div>
+            <motion.button
+              onClick={() => {
+                addToCart({
+                  id: product._id || product.id,
+                  name: product.name,
+                  price: product.discountPrice || product.price,
+                  quantity: 1,
+                  image: imageUrl,
+                  brand: product.brand,
+                  category: product.category
+                });
+                alert("Added to cart!");
+              }}
+              className="bg-[#0C2730] text-white p-4 rounded-2xl shadow-xl shadow-[#0C2730]/20 active:scale-95 transition-transform"
+              whileHover={{ scale: 1.1 }}
+            >
+              <Plus className="w-6 h-6" />
+            </motion.button>
           </div>
-          <motion.button
+          <button
             onClick={() => {
-              addToCart({
-                id: product._id || product.id,
-                name: product.name,
-                price: product.discountPrice || product.price,
-                quantity: 1,
-                image: imageUrl,
-                brand: product.brand,
-                category: product.category
-              });
-              alert("Added to cart!");
+              addToCompare(product._id || product.id);
+              if (!isInCompare(product._id || product.id)) {
+                alert("Added to compare!");
+              }
             }}
-            className="bg-[#0C2730] text-white p-4 rounded-2xl shadow-xl shadow-[#0C2730]/20 active:scale-95 transition-transform"
-            whileHover={{ scale: 1.1 }}
+            disabled={isInCompare(product._id || product.id)}
+            className={`w-full py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+              isInCompare(product._id || product.id)
+                ? "bg-purple-100 text-purple-600 cursor-not-allowed"
+                : "bg-gray-100 text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+            }`}
           >
-            <Plus className="w-6 h-6" />
-          </motion.button>
+            <Scale className="w-4 h-4" />
+            {isInCompare(product._id || product.id) ? "In Compare" : "Compare"}
+          </button>
         </div>
       </div>
     </motion.div>

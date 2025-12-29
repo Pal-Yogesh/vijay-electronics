@@ -198,7 +198,7 @@ const HeroRecommendedProducts = () => {
         
         <div className="text-center mt-20">
           <Link 
-            href="/products"
+            href="/shop"
             className="inline-flex items-center justify-center px-10 py-5 bg-white text-[#14404B] font-black rounded-[24px] shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 hover:-translate-y-1 active:scale-95 uppercase tracking-widest text-xs"
           >
             Explore Full Collection

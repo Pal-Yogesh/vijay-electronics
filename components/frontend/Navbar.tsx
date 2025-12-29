@@ -9,12 +9,14 @@ import {
   User,
   ChevronDown,
   BookMarked,
+  Scale,
 } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
@@ -23,6 +25,7 @@ const Navbar = () => {
 
   const { cartItems } = useCart();
   const { wishlistItems } = useWishlist();
+  const { compareIds } = useCompare();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -148,7 +151,7 @@ const Navbar = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
-      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchOpen(false);
       setSearchQuery("");
     }
@@ -231,7 +234,7 @@ const Navbar = () => {
                     >
                       {category.subcategories.map((subcategory) => (
                         <Link
-                          href={`/category/${subcategory.value}`}
+                          href={`/shop?category=${subcategory.value}`}
                           key={subcategory.value}
                           className="block px-5 py-2.5 text-sm text-black hover:bg-gray-50 hover:text-[#14404B] transition-all duration-200"
                         >
@@ -245,7 +248,7 @@ const Navbar = () => {
             ))}
             <div className="cursor-pointer mt-2 relative group ">
               <Link
-                href="/products"
+                href="/shop"
                 className="text-black hover:text-[#14404B] transition-colors duration-300 relative group cursor-pointer"
               >
                 All Products
@@ -341,6 +344,18 @@ const Navbar = () => {
               <span className="absolute -top-2 -right-2 bg-teal-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-transform duration-300 hover:scale-110">
                 {wishlistItems.length}
               </span>
+              <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link
+              href="/compare-products"
+              className="text-gray-700 hover:text-teal-600 transition-colors duration-300 relative group"
+            >
+              <Scale className="h-5 w-5" />
+              {compareIds.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-transform duration-300 hover:scale-110">
+                  {compareIds.length}
+                </span>
+              )}
               <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-teal-600 transition-all duration-300 group-hover:w-full"></span>
             </Link>
 
