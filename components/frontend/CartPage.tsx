@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
+  const router = useRouter();
   const { cartItems, subtotal, updateItemQuantity, removeItemFromCart } =
     useCart();
 
@@ -20,11 +22,7 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-    setIsCheckingOut(true);
-    setTimeout(() => {
-      setIsCheckingOut(false);
-      alert("Checkout completed! (This is just a demo)");
-    }, 2000);
+    router.push("/checkout");
   };
 
   return (
