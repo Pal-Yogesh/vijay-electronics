@@ -10,7 +10,8 @@ import {
   Settings,
   BarChart3,
   Tag,
-  FileText
+  FileText,
+  FileUp,
 } from "lucide-react";
 
 const menuItems = [
@@ -28,6 +29,11 @@ const menuItems = [
     title: "Add Product",
     href: "/admin/products/add",
     icon: Tag,
+  },
+  {
+    title: "Bulk Upload",
+    href: "/admin/products/upload",
+    icon: FileUp,
   },
   {
     title: "Orders",

@@ -395,71 +395,48 @@ export const fanSpecs = [
   // General Information
   { name: "modelName", label: "Model Name" },
   { name: "color", label: "Color" },
-  { name: "mountingType", label: "Mounting Type" },
-  { name: "fanDesign", label: "Fan Design" },
+  { name: "availableColors", label: "Available Colors" },
+  { name: "electricFanDesign", label: "Fan Design" },
   { name: "powerSource", label: "Power Source" },
   { name: "roomType", label: "Suitable Room Type" },
-  { name: "specialFeatures", label: "Special Features" },
-  { name: "recommendedUses", label: "Recommended Uses" },
+  { name: "tags", label: "Tags" },
+  { name: "keyFeatures", label: "Key Features" },
+
+  // Blade & Design
   { name: "numberOfBlades", label: "Number of Blades" },
-  { name: "bladeSweep", label: "Blade Sweep (Diameter)" },
+  { name: "bladeLength", label: "Blade Length" },
   { name: "bladeMaterial", label: "Blade Material" },
-  { name: "switchType", label: "Switch Type" },
-  { name: "controlMethod", label: "Control Method" },
-  { name: "powerLevels", label: "Number of Power Levels" },
-  { name: "specificationMet", label: "Standards Met (e.g., BEE Rated)" },
+  { name: "controlType", label: "Control Type" },
 
   // Performance
-  { name: "airFlow", label: "Air Flow Capacity" },
-  { name: "airThrowDistance", label: "Air Throw Distance" },
-  { name: "airDeflection", label: "Air Deflection Type" },
-  { name: "speed (RPM)", label: "Speed (RPM)" },
-
-  // Coverage & Efficiency
-  { name: "coverageArea", label: "Cooling Coverage Area" },
+  { name: "airFlowCapacity", label: "Air Flow Capacity" },
+  { name: "speedRPM", label: "Speed (RPM)" },
+  { name: "wattage", label: "Wattage" },
   { name: "energyEfficiencyRating", label: "Energy Efficiency Rating" },
 
-  // Dimensions & Weight
-  { name: "productDimensions", label: "Product Dimensions (LxWxH)" },
-  { name: "width", label: "Width" },
-  { name: "height", label: "Height" },
-  { name: "depth", label: "Depth" },
-  { name: "weight", label: "Weight" },
-
-  // Body & Design
-  { name: "bodyMaterial", label: "Body Material" },
-  { name: "iceChamber", label: "Ice Chamber (if any)" },
-  { name: "castorWheels", label: "Castor Wheels" },
-  { name: "autoLouver", label: "Auto Louver Movement" },
-  { name: "oscillatingFunction", label: "Oscillating Function" },
+  // Dimensions & Packaging
+  { name: "productDimensions", label: "Product Dimensions" },
+  { name: "numberOfBoxes", label: "Number of Boxes" },
+  { name: "unitCount or itemsPerInnerPage", label: "Unit Count" },
+  { name: "includedComponents", label: "Included Components" },
 
   // Convenience Features
   { name: "remoteSupport", label: "Remote Support" },
-  { name: "waterLevelIndicator", label: "Water Level Indicator" },
-  { name: "emptyTankAlarm", label: "Empty Tank Alarm" },
-  { name: "overflowIndicator", label: "Overflow Indicator" },
   { name: "inverterCompatible", label: "Inverter Compatible" },
+  { name: "indoorOutdoorUsage", label: "Indoor/Outdoor Usage" },
 
   // Power & Electrical
   { name: "voltage", label: "Voltage" },
-  { name: "powerRequirement", label: "Power Requirement" },
-  { name: "energyConsumption", label: "Power Consumption (W)" },
+  { name: "areBatteriesRequired", label: "Are Batteries Required" },
 
-  // Warranty
-  { name: "warrantySummary", label: "Warranty Summary" },
-  { name: "coveredInWarranty", label: "Covered in Warranty" },
-  { name: "notCoveredInWarranty", label: "Not Covered in Warranty" },
-  { name: "warrantyServiceType", label: "Warranty Service Type" },
-  { name: "domesticWarrantyPeriod", label: "Domestic Warranty Period" },
-
-  // Packaging & Quantity
-  { name: "includedComponents", label: "Included Components" },
-  { name: "netQuantity", label: "Net Quantity" },
-
-  // Manufacturer/Origin Info
+  // Warranty & Manufacturer
+  { name: "warranty", label: "Warranty" },
+  { name: "manufaturer", label: "Manufacturer" },
   { name: "countryOfOrigin", label: "Country of Origin" },
-  { name: "manufactureYear", label: "Manufacture Year" },
-  { name: "asinOrSKU", label: "ASIN/SKU" },
+
+  // Links
+  { name: "productURL", label: "Product URL" },
+  { name: "thumbnail", label: "Thumbnail URL" },
 ];
 
 
